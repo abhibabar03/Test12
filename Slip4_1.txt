@@ -1,0 +1,118 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="177dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="176dp"
+        android:text="demo"
+        android:textSize="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageSwitcher
+        android:id="@+id/imageSwitcher"
+        android:layout_width="match_parent"
+        android:layout_height="279dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="193dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="124dp"
+        android:text="next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageSwitcher" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+package com.example.slip4_1;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.ViewSwitcher;
+
+public class MainActivity extends AppCompatActivity {
+
+    ImageSwitcher img;
+    Button b1;
+
+    int imgArr[]={R.drawable.img,R.drawable.img_1,R.drawable.img_2,R.drawable.img_3};
+    int count=imgArr.length;
+    int currentIndex=-1;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        img=findViewById(R.id.imageSwitcher);
+        b1=findViewById(R.id.button);
+
+        img.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView imgView= new ImageView(getApplicationContext());
+                imgView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                //imgView.setLayoutParams(new  ViewGroup.LayoutParams());
+                return imgView;
+            }
+        });
+
+        //declare animation in and out
+        Animation in=AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
+        Animation out=AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
+
+        //set them
+        img.setInAnimation(in);
+        img.setOutAnimation(out);
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentIndex++;
+                if(currentIndex==count){
+                    currentIndex=0;
+                    img.setImageResource(imgArr[currentIndex]);
+                }
+                else{
+                    img.setImageResource(imgArr[currentIndex]);
+                }
+            }
+        });
+
+
+    }
+}
+
+
